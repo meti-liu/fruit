@@ -1,15 +1,15 @@
 ﻿  Fruit.cpp
-C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(43,38): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(43,35): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(44,42): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(44,39): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
 C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(48,38): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
 C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(48,35): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
 C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(49,42): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
 C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(49,39): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(61,32): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
-C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(63,31): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
-C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(64,27): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
-C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(68,1): warning C4305: “*=”: 从“double”到“float”截断
-C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(69,1): warning C4305: “*=”: 从“double”到“float”截断
+C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(53,38): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(53,35): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(54,42): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(54,39): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(66,32): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(68,31): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(69,27): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(73,1): warning C4305: “*=”: 从“double”到“float”截断
+C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(74,1): warning C4305: “*=”: 从“double”到“float”截断
   Fruit.vcxproj -> C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\x64\Debug\Fruit.exe
