@@ -13,6 +13,7 @@ int fruit_height;
 bool End = false;
 int r0;//随机数
 IMAGE img_background, img_apple1, img_apple0,img_banana1,img_banana0;//图片资源
+IMAGE img_pineapple0, img_pineapple1,img_bomb;
 
 #pragma comment(lib,"MSIMG32.LIB")//windows自带的一个处理
 inline void putimage1(int x, int y, IMAGE* img)//直接使用putimage函数的话
@@ -23,7 +24,7 @@ inline void putimage1(int x, int y, IMAGE* img)//直接使用putimage函数的话
 		GetImageHDC(img), 0, 0, w, h, {AC_SRC_OVER,0,255,AC_SRC_ALPHA});
 }
 
-enum FruitType{Apple,Banana,Bomb,Pineapple};//我们可以给代号1234，但这样
+enum FruitType{Apple,Banana,Pineapple,Bomb};//我们可以给代号1234，但这样
                                        //意义不明，我们使用enum自定义类型更加直观
 class Fruit
 {
@@ -53,8 +54,17 @@ public:
 			if (sliced == false) putimage1(x, y, &img_banana1);//香蕉切开之前
 			else if (sliced == true) putimage1(x, y, &img_banana0);//香蕉切开之后
 		}
-
-		cout << "Drawing fruit " << type << " at (" << x << ", " << y << "), sliced: " << sliced << endl;
+		else if (type == Pineapple)
+		{
+			if (sliced == false) putimage1(x, y, &img_pineapple1);//香蕉切开之前
+			else if (sliced == true) putimage1(x, y, &img_pineapple0);//香蕉切开之后
+		}
+		else if (type == Bomb)
+		{
+			if (sliced == false) putimage1(x, y, &img_bomb);//香蕉切开之前
+			if (sliced == true) End = true;//切开炸弹游戏结束
+		}
+		//cout << "Drawing fruit " << type << " at (" << x << ", " << y << "), sliced: " << sliced << endl;
 	}
 	void update()//更新一些物理信息
 	{
@@ -63,10 +73,11 @@ public:
 		x += vx;
 		if (sliced == false)//没被切开前，撞墙会反弹
 		{
-			if (y >= height)	vy = -0.95 * vy;
+			if (y >= height)	vy = -0.96 * vy;
 			if (y > height) y = height;
-			if (x >= width) vx = -0.95 * vx;
-			if (x <= 0) vx = -0.95 * vx;
+			//if (y < 0)y = 0;
+			if (x >= width) vx = -0.96 * vx;
+			if (x <= 0) vx = -0.96 * vx;
 		}
 		if (sliced == true) //被切开后不再反弹,受力速度略微有变化
 		{
@@ -94,11 +105,18 @@ void startup()
 	loadimage(&img_apple0, _T("img/AppleSliced.png"));//切开的苹果图片加载
 	loadimage(&img_banana1, _T("img/Banana.png"));//香蕉未切开图片加载
 	loadimage(&img_banana0, _T("img/BananaSliced.png"));//切开的香蕉图片加载
+	loadimage(&img_pineapple1, _T("img/Pineapple.png"));//菠萝未切开图片加载
+	loadimage(&img_pineapple0, _T("img/PineappleSliced.png"));//切开的菠萝图片加载
+	loadimage(&img_bomb, _T("img/FatalBomb.png"));//炸弹未切开图片加载
 
-	fruit_width = img_apple1.getwidth();
+
+	fruit_width = img_apple1.getwidth();//所有Fruit的img大小相等
 	fruit_height = img_apple1.getheight();
-	type[1] = Fruit(20,height,5,-25,0.5,Apple);
+	type[1] = Fruit(20,height,5,-25,0.5,Apple);//给三种类型的水果的物理初始化
 	type[2] = Fruit(800, 0, -5, 20, 0.5,Banana);
+	//type[3] = Fruit(800, 0, -5, 20, 0.5, Pineapple);
+	type[3] = Fruit(800, height, -5, 30, 0.5, Pineapple);
+	type[4] = Fruit(20,0,3,15,0.4,Bomb);
 }
 void Addfruit()//添加水果的函数，搭配计时器使用
 {
@@ -106,8 +124,8 @@ void Addfruit()//添加水果的函数，搭配计时器使用
 	const unsigned long interval = 5000;//5000毫秒，5s
 	if (currenttime - lasttime > interval)
 	{
-		r0 = rand() % 2 + 1;//rand()%2就是随机0或1，这里用于生成水果的下标
-		fruit.push_back(type[r0]);
+		r0 = rand() % 4 + 1;//rand()%3就是随机0或1，2,3，这里用于生成水果type的下标
+		fruit.push_back(type[r0]);//在vector中添加一个随机的type
 		lasttime = currenttime;
 		cout << "Adding fruit: " << r0 << " at time " << currenttime << endl;
 	}
@@ -116,8 +134,7 @@ void Addfruit()//添加水果的函数，搭配计时器使用
 int main()
 {
 	startup();
-	//bool End = false;
-	initgraph(width, height);//w,h
+	initgraph(width, height);//w,h背景图片的长宽
 	BeginBatchDraw();//双缓冲
 	ExMessage msg;
 	srand(static_cast<unsigned int>(time(0)));//搭配rand使用，让每次随机不一样
@@ -131,9 +148,9 @@ int main()
 		{
 			if (msg.message == WM_LBUTTONDOWN)//鼠标左键
 			{
-				for (auto& f : fruit)
+				for (auto& f : fruit)//vector的遍历
 				{
-					int mousex = msg.x;
+					int mousex = msg.x;//记录鼠标的xy坐标
 					int mousey = msg.y;
 
 					if (msg.x <= f.x + fruit_width && msg.x >= f.x
@@ -149,7 +166,7 @@ int main()
 
 		cleardevice();
 		putimage(0, 0, &img_background);//背景图片渲染
-		for (auto& f : fruit)
+		for (auto& f : fruit)//vector中从第一个元素到最后一个
 		{
 			f.draw();
 			f.update();
