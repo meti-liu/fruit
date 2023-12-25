@@ -5,6 +5,7 @@
 #include<ctime>//时间库初始化，搭配随机库使用
 #include<vector>//水果数量未知，我们采用动态数组的方式来记录水果
 using namespace std;
+#pragma comment(lib,"winmm.lib")//用于播放音频的库
 const int width = 1440;
 const int height = 900;
 unsigned long lasttime = 0;//我们尝试通过一个计时器来逐渐增加水果个数
@@ -28,6 +29,23 @@ inline void putimage1(int x, int y, IMAGE* img)//直接使用putimage函数的话
 
 enum FruitType { Apple, Banana, Pineapple, Bomb };//我们可以给代号1234，但这样
 //意义不明，我们使用enum自定义类型更加直观
+
+
+
+
+void GamePause()//游戏暂停
+{
+	pause = !pause; // 切换暂停状态
+
+	if (pause)
+	{
+		// 显示一个暂停的文本提示
+		settextcolor(RED);
+		settextstyle(40, 0, _T("宋体"));
+		outtextxy(width / 2 - 100, height / 2, _T("游戏暂停"));
+		FlushBatchDraw(); // 立即刷新，显示暂停信息
+	}
+}
 class Fruit
 {
 public:
@@ -42,9 +60,20 @@ public:
 	//float g = 0.5;
 	float t;
 	bool out = false;
-	Fruit() :x(0), y(0), vx(0), vy(0), g(0), type(Apple),points(0) {};//这里使用了一个无参的重载，目的是先定义出这么个水果数组
-	Fruit(float x, float y, float vx, float vy, float g, FruitType type,int points) :x(x), y(y), vx(vx), vy(vy), g(g), type(type),points(points) {};//构造函数，并且初始化
+	Fruit() :x(0), y(0), vx(0), vy(0), g(0), type(Apple), points(0) {};//这里使用了一个无参的重载，目的是先定义出这么个水果数组
+	Fruit(float x, float y, float vx, float vy, float g, FruitType type, int points) :x(x), y(y), vx(vx), vy(vy), g(g), type(type), points(points) {};//构造函数，并且初始化
 	//关于这个构造函数的初始化，水果的共性不用放进去，比如初始状态sliced=false，我们加入的是水果的个性
+
+
+
+
+	void drawEnd()
+	{
+		TCHAR scoreStr[50];
+		_stprintf_s(scoreStr, _T("得分: %d"), Score);
+		MessageBox(GetHWnd(), scoreStr, _T("游戏结束"), MB_OK);
+	}
+
 	void draw()//渲染图像
 	{
 
@@ -66,7 +95,11 @@ public:
 		else if (type == Bomb)
 		{
 			if (sliced == false) putimage1(x, y, &img_bomb);//香蕉切开之前
-			if (sliced == true) End = true;//切开炸弹游戏结束
+			if (sliced == true)
+			{
+				End = true;//切开炸弹游戏结束
+				drawEnd();
+			}
 		}
 		//cout << "Drawing fruit " << type << " at (" << x << ", " << y << "), sliced: " << sliced << endl;
 	}
@@ -104,23 +137,23 @@ vector<Fruit> fruit;//使用动态数组来定义水果，因为其个数不确定
 
 void startup()
 {
-	loadimage(&img_background, _T("img/background.jpg"));//背景图片加载
-	loadimage(&img_apple1, _T("img/Apple.png"));//苹果（未切开）图片加载
-	loadimage(&img_apple0, _T("img/AppleSliced.png"));//切开的苹果图片加载
-	loadimage(&img_banana1, _T("img/Banana.png"));//香蕉未切开图片加载
-	loadimage(&img_banana0, _T("img/BananaSliced.png"));//切开的香蕉图片加载
-	loadimage(&img_pineapple1, _T("img/Pineapple.png"));//菠萝未切开图片加载
-	loadimage(&img_pineapple0, _T("img/PineappleSliced.png"));//切开的菠萝图片加载
-	loadimage(&img_bomb, _T("img/FatalBomb.png"));//炸弹未切开图片加载
+	loadimage(&img_background, _T("D:/game/lbr/Fruit/img/background.png"));//背景图片加载
+	loadimage(&img_apple1, _T("D:/game/lbr/Fruit/img/Apple.png"));//苹果（未切开）图片加载
+	loadimage(&img_apple0, _T("D:/game/lbr/Fruit/img/AppleSliced.png"));//切开的苹果图片加载
+	loadimage(&img_banana1, _T("D:/game/lbr/Fruit/img/Banana.png"));//香蕉未切开图片加载
+	loadimage(&img_banana0, _T("D:/game/lbr/Fruit/img/BananaSliced.png"));//切开的香蕉图片加载
+	loadimage(&img_pineapple1, _T("D:/game/lbr/Fruit/img/Pineapple.png"));//菠萝未切开图片加载
+	loadimage(&img_pineapple0, _T("D:/game/lbr/Fruit/img/PineappleSliced.png"));//切开的菠萝图片加载
+	loadimage(&img_bomb, _T("D:/game/lbr/Fruit/img/FatalBomb.png"));//炸弹未切开图片加载
 
 
 	fruit_width = img_apple1.getwidth();//所有Fruit的img大小相等
 	fruit_height = img_apple1.getheight();
-	type[1] = Fruit(20, height, 5, -25, 0.5, Apple,10);//给三种类型的水果的物理初始化
-	type[2] = Fruit(800, 0, -5, 20, 0.5, Banana,20);
+	type[1] = Fruit(20, height, 5, -25, 0.5, Apple, 10);//给三种类型的水果的物理初始化
+	type[2] = Fruit(800, 0, -5, 20, 0.5, Banana, 20);
 	//type[3] = Fruit(800, 0, -5, 20, 0.5, Pineapple);
-	type[3] = Fruit(800, height, -5, 30, 0.5, Pineapple,15);
-	type[4] = Fruit(20, 0, 3, 15, 0.4, Bomb,0);
+	type[3] = Fruit(800, height, -5, 30, 0.5, Pineapple, 15);
+	type[4] = Fruit(20, 0, 3, 15, 0.4, Bomb, 0);
 }
 void Addfruit()//添加水果的函数，搭配计时器使用
 {
@@ -138,7 +171,12 @@ void Addfruit()//添加水果的函数，搭配计时器使用
 int main()
 {
 	startup();
+
 	initgraph(width, height);//w,h背景图片的长宽
+
+	mciSendString(L"play D:/game/lbr/Fruit/music/Fruit.mp3 repeat", 0, 0, 0);//播放音乐
+
+
 	BeginBatchDraw();//双缓冲
 	ExMessage msg;
 	srand(static_cast<unsigned int>(time(0)));//搭配rand使用，让每次随机不一样
@@ -146,61 +184,45 @@ int main()
 	while (!End)//游戏的主循环
 	{
 
-		if (_kbhit())//检测键盘输入
+
+
+		//记录下鼠标的坐标
+		while (peekmessage(&msg))
 		{
-			char ch = _getch();//获取按键
-			if (ch == 32)
+			if (msg.message == WM_LBUTTONDOWN)//鼠标左键
 			{
-				pause = !pause;//取非，相反状态
-				if (pause)
+				for (auto& f : fruit)//vector的遍历
 				{
-					// 显示一个暂停的文本提示
-					settextcolor(RED);
-					settextstyle(40, 0, _T("宋体"));
-					outtextxy(width / 2 - 100, height / 2, _T("游戏暂停"));
-					continue; // 直接跳到循环开始，避免处理其它输入
-				}
+					int mousex = msg.x;//记录鼠标的xy坐标
+					int mousey = msg.y;
 
-				else
-				{
-					cout << "continue";
-				}
-			}
-		}
-
-		if (!pause)
-		{
-			Addfruit();
-
-			//记录下鼠标的坐标
-			while (peekmessage(&msg))
-			{
-				if (msg.message == WM_LBUTTONDOWN)//鼠标左键
-				{
-					for (auto& f : fruit)//vector的遍历
+					if (msg.x <= f.x + fruit_width && msg.x >= f.x
+						&& msg.y <= f.y + fruit_height && msg.y >= f.y)
 					{
-						int mousex = msg.x;//记录鼠标的xy坐标
-						int mousey = msg.y;
-
-						if (msg.x <= f.x + fruit_width && msg.x >= f.x
-							&& msg.y <= f.y + fruit_height && msg.y >= f.y)
+						f.sliced = true;//我们判断了鼠标的坐标与水果的坐标是否重叠
+						if (f.scored == false)
 						{
-							f.sliced = true;//我们判断了鼠标的坐标与水果的坐标是否重叠
-							if (f.scored == false)
-							{
-								Score += f.points;//不同水果加分效果不同
-								f.scored = true;//防止重复加分
-							}
+							Score += f.points;//不同水果加分效果不同
+							f.scored = true;//防止重复加分
 						}
-
 					}
 
 				}
 
 			}
 
+			else if (msg.message == WM_KEYDOWN)
+			{
+				if (msg.vkcode == VK_SPACE)//检测键盘的空格键
+				{
+					GamePause();
+				}
+			}
+		}
 
-
+		if (!pause)
+		{
+			Addfruit();//加水果
 			cleardevice();
 			putimage(0, 0, &img_background);//背景图片渲染
 			// 显示得分
@@ -214,15 +236,16 @@ int main()
 				f.draw();
 				f.update();
 			}
+
+
+
+			FlushBatchDraw();//双缓冲
 		}
 
 
-		FlushBatchDraw();//双缓冲
 		Sleep(20);
 	}
 	EndBatchDraw();
-	_getch(); // 等待按键
 	closegraph();
 	return 0;
 }
-
