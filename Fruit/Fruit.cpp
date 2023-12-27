@@ -137,7 +137,7 @@ vector<Fruit> fruit;//使用动态数组来定义水果，因为其个数不确定
 
 void startup()
 {
-	loadimage(&img_background, _T("D:/game/lbr/Fruit/img/background.png"));//背景图片加载
+	loadimage(&img_background, _T("D:/game/lbr/Fruit/img/background.jpg"));//背景图片加载
 	loadimage(&img_apple1, _T("D:/game/lbr/Fruit/img/Apple.png"));//苹果（未切开）图片加载
 	loadimage(&img_apple0, _T("D:/game/lbr/Fruit/img/AppleSliced.png"));//切开的苹果图片加载
 	loadimage(&img_banana1, _T("D:/game/lbr/Fruit/img/Banana.png"));//香蕉未切开图片加载

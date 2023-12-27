@@ -19,4 +19,5 @@ C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(117,27)
 C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(121,1): warning C4305: “*=”: 从“double”到“float”截断
 C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(122,1): warning C4305: “*=”: 从“double”到“float”截断
 C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\Fruit\Fruit.cpp(156,32): warning C4305: “参数”: 从“double”到“float”截断
+  LINK : 没有找到 C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\x64\Debug\Fruit.exe 或上一个增量链接没有生成它；正在执行完全链接
   Fruit.vcxproj -> C:\Users\刘博瑞\OneDrive\桌面\大作业\Fruit\fruit\x64\Debug\Fruit.exe
